@@ -1,9 +1,10 @@
 import 'dart:math' as math;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import './theme.dart';
+import './src/task_list_screen.dart';
+import './src/theme.dart';
 
 void main() {
   return runApp(MyApp());
@@ -39,31 +40,50 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  Widget _buildTaskListCard(Color color, String title) {
+  Widget _buildTaskListCard(
+      BuildContext context, Color color, String title, String tag) {
     var textStyle = color == Theme.of(context).primaryColor
         ? Theme.of(context).primaryTextTheme.title.copyWith(color: Colors.white)
         : Theme.of(context).primaryTextTheme.title;
 
-    return Container(
-      width: 220.0,
-      margin: EdgeInsets.only(right: 22.5, bottom: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromRGBO(225, 232, 238, 1),
-            offset: Offset(12, 12),
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => TaskListScreen(
+                    title: title,
+                    textStyle: textStyle,
+                    color: color,
+                    tag: tag,
+                  ),
+              // fullscreenDialog: true,d
+              // fullscreenDialog: true,
+            ),
           ),
-        ],
-      ),
-      child: Container(
-        padding: EdgeInsets.only(left: 12.0, top: 35.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(title, style: textStyle),
-          ],
+      child: Hero(
+        tag: tag,
+        transitionOnUserGestures: true,
+        child: Container(
+          width: 220.0,
+          margin: EdgeInsets.only(right: 22.5, bottom: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: color,
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromRGBO(225, 232, 238, 1),
+                offset: Offset(12, 12),
+              ),
+            ],
+          ),
+          child: Container(
+            padding: EdgeInsets.only(left: 12.0, top: 35.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(title, style: textStyle),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -158,10 +178,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
-                      _buildTaskListCard(Colors.white, 'Daily Tasks'),
                       _buildTaskListCard(
-                          Theme.of(context).primaryColor, 'Another Task'),
-                      _buildTaskListCard(Colors.white, 'And another task'),
+                        context,
+                        Colors.white,
+                        'Daily Tasks',
+                        'TaskList1',
+                      ),
+                      _buildTaskListCard(
+                        context,
+                        Theme.of(context).primaryColor,
+                        'Another Task',
+                        'TaskList2',
+                      ),
+                      _buildTaskListCard(
+                        context,
+                        Colors.white,
+                        'And another task',
+                        'TaskList3',
+                      ),
                     ],
                   ),
                 ),
