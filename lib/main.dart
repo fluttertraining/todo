@@ -1,13 +1,19 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import './theme.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: themeData,
@@ -26,6 +32,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final percentage = 0.44;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Widget _buildTaskListCard(Color color) {
+    return Container(
+      width: 200.0,
+      margin: EdgeInsets.only(right: 20, bottom: 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: color,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromRGBO(225, 232, 238, 1),
+              offset: Offset(12, 12),
+            ),
+          ]),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.of(context).size.height * .2,
               child: Center(
                 child: CustomPaint(
-                  painter: ClockPainter(),
+                  painter: ClockPainter(percentage: percentage),
                 ),
               ),
             ),
@@ -115,45 +144,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
-                      Container(
-                        width: 200.0,
-                        margin: EdgeInsets.only(right: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color.fromRGBO(225, 232, 238, 1),
-                                offset: Offset(12, 12),
-                              ),
-                            ]),
-                      ),
-                      Container(
-                        width: 200.0,
-                        margin: EdgeInsets.only(right: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color.fromRGBO(225, 232, 238, 1),
-                                offset: Offset(12, 12),
-                              ),
-                            ]),
-                      ),
-                      Container(
-                        width: 200.0,
-                        margin: EdgeInsets.only(right: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color.fromRGBO(225, 232, 238, 1),
-                                offset: Offset(12, 12),
-                              ),
-                            ]),
-                      ),
+                      _buildTaskListCard(Colors.white),
+                      _buildTaskListCard(Theme.of(context).primaryColor),
+                      _buildTaskListCard(Colors.white),
                     ],
                   ),
                 ),
@@ -168,11 +161,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class ClockPainter extends CustomPainter {
   var bars = 60;
-  var radius = 85;
+  var radius = 90;
+  final double percentage;
 
-  var linePaint = Paint()
+  ClockPainter({@required this.percentage});
+
+  var activeLinePaint = Paint()
     ..color = const Color.fromRGBO(71, 153, 247, 1)
     ..strokeWidth = 4;
+
+  var inactiveLinePaint = Paint()
+    ..color = Color.fromRGBO(222, 234, 246, 1)
+    ..strokeWidth = 4;
+
+  var circleShadowPaint = Paint()..color = Colors.grey;
+  var circlePaint = Paint()..color = Colors.white;
 
   double degreesToRadians(degrees) {
     return degrees * math.pi / 180;
@@ -181,13 +184,19 @@ class ClockPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (var ctr = 0; ctr < bars; ctr++) {
-      var x = radius * math.cos(this.degreesToRadians(ctr * 6));
-      var y = radius * math.sin(this.degreesToRadians(ctr * 6));
+      var rad = this.degreesToRadians((ctr * 6) - 90);
+      var x = radius * math.cos(rad);
+      var y = radius * math.sin(rad);
 
-      canvas.drawLine(Offset(x, y), Offset.zero, linePaint);
+      if (ctr / bars > percentage) {
+        canvas.drawLine(Offset(x, y), Offset.zero, inactiveLinePaint);
+      } else {
+        canvas.drawLine(Offset(x, y), Offset.zero, activeLinePaint);
+      }
     }
 
-    canvas.drawCircle(Offset.zero, 75, Paint());
+    // canvas.drawCircle(Offset(1, 2.5), 75, circleShadowPaint);
+    canvas.drawCircle(Offset.zero, 75, circlePaint);
   }
 
   @override
