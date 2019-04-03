@@ -43,12 +43,17 @@ class TaskListScreen extends StatelessWidget {
               ),
             ],
           ),
-          child: Container(
+          child: Padding(
             padding: EdgeInsets.only(left: 30.0, top: 40.0, right: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(title, style: textStyle),
+                Row(
+                  children: <Widget>[
+                    Text('Sup', style: textStyle),
+                  ],
+                )
               ],
             ),
           ),

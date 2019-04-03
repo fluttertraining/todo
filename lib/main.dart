@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+
+import './src/route_animations.dart';
 import './src/task_list_screen.dart';
 import './src/theme.dart';
 
@@ -41,16 +43,30 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildTaskListCard(BuildContext context, color, title, tag) {
-    var textStyle = color == Theme.of(context).primaryColor
-        ? Theme.of(context).primaryTextTheme.title.copyWith(color: Colors.white)
-        : Theme.of(context).primaryTextTheme.title;
+    var titleStyle;
+    var listItemStyle;
+
+    if (color == Theme.of(context).primaryColor) {
+      titleStyle =
+          Theme.of(context).textTheme.title.copyWith(color: Colors.white);
+      listItemStyle = Theme.of(context)
+          .primaryTextTheme
+          .subtitle
+          .copyWith(color: Colors.white);
+    } else {
+      titleStyle = Theme.of(context).textTheme.title;
+      listItemStyle = Theme.of(context)
+          .primaryTextTheme
+          .subtitle
+          .copyWith(color: Theme.of(context).accentColor);
+    }
 
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
             FadeInSlideOutRoute(
               builder: (BuildContext context) => TaskListScreen(
                     title: title,
-                    textStyle: textStyle,
+                    textStyle: titleStyle,
                     color: color,
                     tag: tag,
                   ),
@@ -71,12 +87,26 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          child: Container(
-            padding: EdgeInsets.only(left: 12.0, top: 35.0),
+          child: Padding(
+            padding: EdgeInsets.only(top: 35.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(title, style: textStyle),
+                Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Text(title, style: titleStyle),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'Sup',
+                        style: listItemStyle,
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -257,18 +287,5 @@ class ClockPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
-  }
-}
-
-class FadeInSlideOutRoute<T> extends CupertinoPageRoute<T> {
-  FadeInSlideOutRoute({WidgetBuilder builder, RouteSettings settings})
-      : super(builder: builder, settings: settings);
-
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    if (settings.isInitialRoute) return child;
-
-    return FadeTransition(opacity: animation, child: child);
   }
 }

@@ -10,6 +10,14 @@ final themeData = ThemeData(
   backgroundColor: grey,
   fontFamily: 'Product Sans',
   scaffoldBackgroundColor: grey,
+  textTheme: TextTheme(
+    title: TextStyle(
+      color: greyBlue,
+      fontSize: 20,
+      letterSpacing: 0.4,
+      fontWeight: FontWeight.w700,
+    ),
+  ),
   primaryTextTheme: TextTheme(
     subtitle: TextStyle(
       fontWeight: FontWeight.w700,
