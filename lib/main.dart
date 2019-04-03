@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
+import 'package:flutter/scheduler.dart' show timeDilation;
 import './src/task_list_screen.dart';
 import './src/theme.dart';
 
@@ -48,20 +48,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
+            FadeInSlideOutRoute(
               builder: (BuildContext context) => TaskListScreen(
                     title: title,
                     textStyle: textStyle,
                     color: color,
                     tag: tag,
                   ),
-              // fullscreenDialog: true,d
-              // fullscreenDialog: true,
             ),
           ),
       child: Hero(
         tag: tag,
-        transitionOnUserGestures: true,
         child: Container(
           width: 220.0,
           margin: EdgeInsets.only(right: 22.5, bottom: 10),
@@ -89,8 +86,54 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Row _buildTaskActionWithTitle(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          'Tasks List',
+          style: Theme.of(context).primaryTextTheme.title,
+        ),
+        IconButton(
+          icon: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              color: Colors.red[400],
+              borderRadius: BorderRadius.circular(3),
+            ),
+            child: Icon(
+              Icons.add,
+              color: Theme.of(context).backgroundColor,
+            ),
+          ),
+          onPressed: () {},
+        )
+      ],
+    );
+  }
+
+  Column _buildSalutation(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Good Afternoon,',
+          style: Theme.of(context).primaryTextTheme.headline,
+        ),
+        SizedBox(height: 3.5),
+        Text(
+          'Sean Urgel',
+          style: Theme.of(context).primaryTextTheme.subtitle,
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    timeDilation = 1.1;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -116,20 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Good Afternoon,',
-                    style: Theme.of(context).primaryTextTheme.headline,
-                  ),
-                  SizedBox(height: 3.5),
-                  Text(
-                    'Sean Urgel',
-                    style: Theme.of(context).primaryTextTheme.subtitle,
-                  )
-                ],
-              ),
+              child: _buildSalutation(context),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * .2,
@@ -139,68 +169,41 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Tasks List',
-                        style: Theme.of(context).primaryTextTheme.title,
-                      ),
-                      IconButton(
-                        icon: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.red[400],
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: Theme.of(context).backgroundColor,
-                          ),
-                        ),
-                        onPressed: () {},
-                      )
-                    ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: _buildTaskActionWithTitle(context),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.only(left: 30),
+              margin: EdgeInsets.only(
+                bottom: 30,
+              ),
+              height: MediaQuery.of(context).size.height * .3,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  _buildTaskListCard(
+                    context,
+                    Colors.white,
+                    'Daily Tasks',
+                    'TaskList1',
                   ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.only(left: 30),
-                  margin: EdgeInsets.only(
-                    bottom: 30,
+                  _buildTaskListCard(
+                    context,
+                    Theme.of(context).primaryColor,
+                    'Another Task',
+                    'TaskList2',
                   ),
-                  height: MediaQuery.of(context).size.height * .3,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      _buildTaskListCard(
-                        context,
-                        Colors.white,
-                        'Daily Tasks',
-                        'TaskList1',
-                      ),
-                      _buildTaskListCard(
-                        context,
-                        Theme.of(context).primaryColor,
-                        'Another Task',
-                        'TaskList2',
-                      ),
-                      _buildTaskListCard(
-                        context,
-                        Colors.white,
-                        'And another task',
-                        'TaskList3',
-                      ),
-                    ],
+                  _buildTaskListCard(
+                    context,
+                    Colors.white,
+                    'And another task',
+                    'TaskList3',
                   ),
-                ),
-              ],
-            )
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -251,5 +254,18 @@ class ClockPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class FadeInSlideOutRoute<T> extends CupertinoPageRoute<T> {
+  FadeInSlideOutRoute({WidgetBuilder builder, RouteSettings settings})
+      : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    if (settings.isInitialRoute) return child;
+
+    return FadeTransition(opacity: animation, child: child);
   }
 }
