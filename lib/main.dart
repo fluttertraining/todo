@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     duration = Duration(minutes: 1);
     start = duration.inSeconds;
-    startTimer();
+    // startTimer();
   }
 
   String timerString() {
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
               timer.cancel();
             } else {
               start = start - 1;
-              percentage = .99 - (start / Duration(minutes: 1).inSeconds);
+              percentage = .99 - (start / duration.inSeconds);
             }
           }),
     );
@@ -215,6 +215,19 @@ class _TaskListCard extends StatelessWidget {
   final String title;
   final String tag;
 
+  void navigateToToScreen(TextStyle titleStyle) {
+    Navigator.of(context).push(
+      FadeInSlideOutRoute(
+        builder: (BuildContext context) => TaskListScreen(
+              title: title,
+              textStyle: titleStyle,
+              color: color,
+              tag: tag,
+            ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var titleStyle;
@@ -235,21 +248,8 @@ class _TaskListCard extends StatelessWidget {
           .copyWith(color: Theme.of(context).accentColor);
     }
 
-    void navigateToToScreen() {
-      Navigator.of(context).push(
-        FadeInSlideOutRoute(
-          builder: (BuildContext context) => TaskListScreen(
-                title: title,
-                textStyle: titleStyle,
-                color: color,
-                tag: tag,
-              ),
-        ),
-      );
-    }
-
     return GestureDetector(
-      onTap: navigateToToScreen,
+      onTap: () => navigateToToScreen(titleStyle),
       child: Hero(
         tag: tag,
         child: Container(
