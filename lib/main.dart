@@ -137,28 +137,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: GestureDetector(
-                  onTap: this.startTimer,
-                  child: LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints size) =>
-                        Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: size.maxHeight / 2,
-                              left: size.maxWidth / 2,
-                              child: CustomPaint(
-                                painter: ClockPainter(
-                                  percentage: percentage,
-                                  timeRemaining: timerString(),
-                                ),
-                                child: Container(
-                                  height: size.maxHeight,
-                                  width: size.maxWidth,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                  )),
+                onTap: this.startTimer,
+                child: CustomPaint(
+                  painter: ClockPainter(
+                    percentage: percentage,
+                    timeRemaining: timerString(),
+                  ),
+                  child: Container(),
+                ),
+              ),
             ),
             Column(
               children: <Widget>[
@@ -271,13 +258,22 @@ class ClockPainter extends CustomPainter {
       var y = radius * math.sin(rad);
 
       if (ctr / bars >= percentage) {
-        canvas.drawLine(Offset(x, y), Offset.zero, inactiveLinePaint);
+        canvas.drawLine(
+          Offset(x + 187.5, y + 146),
+          Offset(size.width / 2, size.height / 2),
+          inactiveLinePaint,
+        );
       } else {
-        canvas.drawLine(Offset(x, y), Offset.zero, activeLinePaint);
+        canvas.drawLine(
+          Offset(x + 187.5, y + 146),
+          Offset(size.width / 2, size.height / 2),
+          activeLinePaint,
+        );
       }
     }
 
-    canvas.drawCircle(Offset.zero, radius - 15, circlePaint);
+    canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2), radius - 12.5, circlePaint);
 
     var splitTime = timeRemaining.split('.');
 
@@ -297,7 +293,7 @@ class ClockPainter extends CustomPainter {
     );
 
     tp.layout();
-    tp.paint(canvas, Offset(-40, -12));
+    tp.paint(canvas, Offset((size.width / 2) - 40, (size.height / 2) - 12));
   }
 
   @override
