@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './todo.dart';
 
-class TaskListScreen extends StatelessWidget {
+class TaskListScreen extends StatefulWidget {
   final String title;
   final TextStyle textStyle;
   final Color color;
@@ -20,6 +20,17 @@ class TaskListScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _TaskListScreenState createState() => _TaskListScreenState();
+}
+
+class _TaskListScreenState extends State<TaskListScreen> {
+  onPressTask(int ndx) => (bool value) {
+        setState(() {
+          widget.todos[ndx].isFinished = value;
+        });
+      };
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,12 +45,12 @@ class TaskListScreen extends StatelessWidget {
         ],
       ),
       body: Hero(
-        tag: tag,
+        tag: widget.tag,
         child: Container(
           margin: EdgeInsets.only(top: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(50)),
-            color: color,
+            color: widget.color,
             boxShadow: [
               BoxShadow(
                 color: const Color.fromRGBO(225, 232, 238, 1),
@@ -57,15 +68,15 @@ class TaskListScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(title, style: textStyle),
+                      Text(widget.title, style: widget.textStyle),
                       Material(
                         elevation: 0,
-                        color: color,
+                        color: widget.color,
                         child: IconButton(
                           icon: Icon(Icons.add),
                           onPressed: () {},
                           iconSize: 36,
-                          color: accentColor,
+                          color: widget.accentColor,
                         ),
                       )
                     ],
@@ -75,12 +86,13 @@ class TaskListScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: ListView.builder(
-                      itemCount: this.todos.length,
+                      itemCount: this.widget.todos.length,
                       itemBuilder: (BuildContext context, ndx) => _TaskItem(
-                            color: color,
-                            textStyle: textStyle,
-                            taskName: this.todos[ndx].taskName,
-                            isFinished: this.todos[ndx].isFinished,
+                            color: widget.color,
+                            textStyle: widget.textStyle,
+                            taskName: this.widget.todos[ndx].taskName,
+                            isFinished: this.widget.todos[ndx].isFinished,
+                            onPressTask: this.onPressTask(ndx),
                           ),
                     ),
                   ),
@@ -91,7 +103,6 @@ class TaskListScreen extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
 
@@ -100,6 +111,7 @@ class _TaskItem extends StatelessWidget {
   final TextStyle textStyle;
   final String taskName;
   final bool isFinished;
+  final Function onPressTask;
 
   _TaskItem({
     Key key,
@@ -107,6 +119,7 @@ class _TaskItem extends StatelessWidget {
     @required this.textStyle,
     @required this.taskName,
     @required this.isFinished,
+    @required this.onPressTask,
   }) : super(key: key);
 
   @override
@@ -118,7 +131,7 @@ class _TaskItem extends StatelessWidget {
           color: color,
           child: Checkbox(
             value: this.isFinished,
-            onChanged: (value) {},
+            onChanged: onPressTask,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ),
