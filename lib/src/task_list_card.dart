@@ -123,6 +123,7 @@ class _TaskListCardState extends State<TaskListCard> {
                             taskName: widget.todos[ndx].taskName,
                             isFinished: widget.todos[ndx].isFinished,
                             onPressTask: onPressTask(ndx),
+                            accentColor: widget.accentColor,
                           ),
                     ),
                   ),
