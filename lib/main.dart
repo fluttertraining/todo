@@ -9,6 +9,7 @@ import './src/list_item.dart';
 import './src/route_animations.dart';
 import './src/task_list_screen.dart';
 import './src/theme.dart';
+import './src/todo.dart';
 
 void main() {
   return runApp(MyApp());
@@ -39,8 +40,24 @@ class _MyHomePageState extends State<MyHomePage> {
   int start;
 
   final List<MyListItem> listItems = [
-    MyListItem(Colors.white, deepBlue, "Daily Tasks"),
-    MyListItem(deepBlue, Colors.white, "Tuesday Tasks"),
+    MyListItem(
+      color: Colors.white,
+      accentColor: deepBlue,
+      text: "Daily Tasks",
+      todos: [
+        Todo(taskName: 'Wake up', date: DateTime.now()),
+        Todo(taskName: 'Eat Breakfast', date: DateTime.now()),
+      ],
+    ),
+    MyListItem(
+      color: deepBlue,
+      accentColor: Colors.white,
+      text: "Tuesday Tasks",
+      todos: [
+        Todo(taskName: '1st block', date: DateTime.now()),
+        Todo(taskName: '2nd block', date: DateTime.now()),
+      ],
+    ),
   ];
 
   initState() {
@@ -138,12 +155,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: MediaQuery.of(context).size.height * .3,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: listItems.length,
+                    itemCount: this.listItems.length,
                     itemBuilder: (BuildContext context, ndx) => _TaskListCard(
                           context: context,
-                          color: listItems[ndx].color,
-                          title: listItems[ndx].text,
-                          accentColor: listItems[ndx].accentColor,
+                          color: this.listItems[ndx].color,
+                          title: this.listItems[ndx].text,
+                          accentColor: this.listItems[ndx].accentColor,
+                          todos: this.listItems[ndx].todos ?? [],
                           tag: 'TaskList$ndx',
                         ),
                   ),
@@ -210,6 +228,7 @@ class _TaskListCard extends StatelessWidget {
   final String title;
   final String tag;
   final Color accentColor;
+  final List<Todo> todos;
 
   const _TaskListCard({
     Key key,
@@ -218,6 +237,7 @@ class _TaskListCard extends StatelessWidget {
     @required this.title,
     @required this.tag,
     @required this.accentColor,
+    @required this.todos,
   }) : super(key: key);
 
   void navigateToToScreen(TextStyle titleStyle) {
@@ -228,6 +248,7 @@ class _TaskListCard extends StatelessWidget {
               textStyle: titleStyle,
               color: color,
               tag: tag,
+              todos: todos,
               accentColor: color == Colors.white ? deepBlue : Colors.white,
             ),
       ),
