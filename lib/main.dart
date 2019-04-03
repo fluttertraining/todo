@@ -34,8 +34,20 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class MyListItem {
+  Color color;
+  String text;
+
+  MyListItem(this.color, this.text);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final percentage = 0.44;
+
+  List<MyListItem> listItems = [
+    MyListItem(Colors.white, "Daily Tasks"),
+    MyListItem(deepBlue, "Tuesday Tasks"),
+  ];
 
   @override
   void initState() {
@@ -61,17 +73,21 @@ class _MyHomePageState extends State<MyHomePage> {
           .copyWith(color: Theme.of(context).accentColor);
     }
 
+    void navigateToToScreen() {
+      Navigator.of(context).push(
+        FadeInSlideOutRoute(
+          builder: (BuildContext context) => TaskListScreen(
+                title: title,
+                textStyle: titleStyle,
+                color: color,
+                tag: tag,
+              ),
+        ),
+      );
+    }
+
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-            FadeInSlideOutRoute(
-              builder: (BuildContext context) => TaskListScreen(
-                    title: title,
-                    textStyle: titleStyle,
-                    color: color,
-                    tag: tag,
-                  ),
-            ),
-          ),
+      onTap: navigateToToScreen,
       child: Hero(
         tag: tag,
         child: Container(
@@ -100,6 +116,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.only(left: 10),
                   child: Row(
                     children: <Widget>[
+                      Material(
+                        elevation: 0,
+                        color: color,
+                        child: Checkbox(
+                          value: true,
+                          onChanged: (value) {},
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
                       Text(
                         'Sup',
                         style: listItemStyle,
@@ -211,28 +237,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     bottom: 30,
                   ),
                   height: MediaQuery.of(context).size.height * .3,
-                  child: ListView(
+                  child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      _buildTaskListCard(
-                        context,
-                        Colors.white,
-                        'Daily Tasks',
-                        'TaskList1',
-                      ),
-                      _buildTaskListCard(
-                        context,
-                        Theme.of(context).primaryColor,
-                        'Another Task',
-                        'TaskList2',
-                      ),
-                      _buildTaskListCard(
-                        context,
-                        Colors.white,
-                        'And another task',
-                        'TaskList3',
-                      ),
-                    ],
+                    itemCount: listItems.length,
+                    itemBuilder: (BuildContext context, ndx) =>
+                        _buildTaskListCard(
+                          context,
+                          listItems[ndx].color,
+                          listItems[ndx].text,
+                          'TaskList$ndx',
+                        ),
                   ),
                 ),
               ],
@@ -246,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class ClockPainter extends CustomPainter {
   var bars = 60;
-  var radius = 90;
+  var radius = 100.0;
   final double percentage;
 
   ClockPainter({@required this.percentage});
@@ -280,8 +294,25 @@ class ClockPainter extends CustomPainter {
       }
     }
 
-    // canvas.drawCircle(Offset(1, 2.5), 75, circleShadowPaint);
-    canvas.drawCircle(Offset.zero, 75, circlePaint);
+    canvas.drawCircle(Offset.zero, radius - 15, circlePaint);
+
+    var span = new TextSpan(
+      style: new TextStyle(
+        color: deepBlue,
+        fontWeight: FontWeight.w700,
+        fontSize: 24,
+      ),
+      text: '2:26:59',
+    );
+
+    var tp = new TextPainter(
+      text: span,
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.ltr,
+    );
+
+    tp.layout();
+    tp.paint(canvas, Offset(-40, -12));
   }
 
   @override
