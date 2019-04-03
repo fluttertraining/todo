@@ -29,11 +29,13 @@ class TaskItem extends StatelessWidget {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ),
-        Text(
-          this.taskName,
-          style: textStyle,
-          overflow: TextOverflow.fade,
-          softWrap: true,
+        Flexible(
+          child: Text(
+            this.taskName,
+            style: textStyle,
+            overflow: TextOverflow.fade,
+            softWrap: true,
+          ),
         ),
       ],
     );
