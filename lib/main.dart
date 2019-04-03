@@ -39,8 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int start;
 
   final List<MyListItem> listItems = [
-    MyListItem(Colors.white, "Daily Tasks"),
-    MyListItem(deepBlue, "Tuesday Tasks"),
+    MyListItem(Colors.white, deepBlue, "Daily Tasks"),
+    MyListItem(deepBlue, Colors.white, "Tuesday Tasks"),
   ];
 
   initState() {
@@ -166,7 +166,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: this.startTimer,
                   child: CustomPaint(
                     painter: ClockPainter(
-                        percentage: percentage, timeRemaining: timerString()),
+                      percentage: percentage,
+                      timeRemaining: timerString(),
+                    ),
                   ),
                 ),
               ),
@@ -188,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           context: context,
                           color: listItems[ndx].color,
                           title: listItems[ndx].text,
+                          accentColor: listItems[ndx].accentColor,
                           tag: 'TaskList$ndx',
                         ),
                   ),
@@ -202,18 +205,20 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class _TaskListCard extends StatelessWidget {
+  final BuildContext context;
+  final Color color;
+  final String title;
+  final String tag;
+  final Color accentColor;
+
   const _TaskListCard({
     Key key,
     @required this.context,
     @required this.color,
     @required this.title,
     @required this.tag,
+    @required this.accentColor,
   }) : super(key: key);
-
-  final BuildContext context;
-  final Color color;
-  final String title;
-  final String tag;
 
   void navigateToToScreen(TextStyle titleStyle) {
     Navigator.of(context).push(
@@ -223,6 +228,7 @@ class _TaskListCard extends StatelessWidget {
               textStyle: titleStyle,
               color: color,
               tag: tag,
+              accentColor: color == Colors.white ? deepBlue : Colors.white,
             ),
       ),
     );
@@ -252,27 +258,30 @@ class _TaskListCard extends StatelessWidget {
       onTap: () => navigateToToScreen(titleStyle),
       child: Hero(
         tag: tag,
-        child: Container(
-          width: 220.0,
-          margin: EdgeInsets.only(right: 22.5, bottom: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: color,
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromRGBO(225, 232, 238, 1),
-                offset: Offset(12, 12),
-              ),
-            ],
-          ),
+        child: _buildCardContainer(
           child: Padding(
-            padding: EdgeInsets.only(top: 35.0),
+            padding: EdgeInsets.only(top: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 15),
-                  child: Text(title, style: titleStyle),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(title, style: titleStyle),
+                      Material(
+                        elevation: 0,
+                        color: color,
+                        child: IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () {},
+                          iconSize: 26,
+                          color: accentColor,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 10),
@@ -300,6 +309,24 @@ class _TaskListCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Container _buildCardContainer({@required Widget child}) {
+    return Container(
+      width: 220.0,
+      margin: EdgeInsets.only(right: 22.5, bottom: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: color,
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromRGBO(225, 232, 238, 1),
+            offset: Offset(12, 12),
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }

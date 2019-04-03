@@ -4,6 +4,7 @@ class TaskListScreen extends StatelessWidget {
   final String title;
   final TextStyle textStyle;
   final Color color;
+  final Color accentColor;
   final String tag;
 
   TaskListScreen({
@@ -12,6 +13,7 @@ class TaskListScreen extends StatelessWidget {
     @required this.textStyle,
     @required this.color,
     @required this.tag,
+    @required this.accentColor,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,6 @@ class TaskListScreen extends StatelessWidget {
       body: Hero(
         tag: tag,
         child: Container(
-          width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.only(top: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(50)),
@@ -50,7 +51,22 @@ class TaskListScreen extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 30.0),
-                  child: Text(title, style: textStyle),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(title, style: textStyle),
+                      Material(
+                        elevation: 0,
+                        color: color,
+                        child: IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () {},
+                          iconSize: 36,
+                          color: accentColor,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Row(
                   children: <Widget>[
