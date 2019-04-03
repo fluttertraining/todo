@@ -81,53 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildTaskActionWithTitle(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            'Tasks List',
-            style: Theme.of(context).primaryTextTheme.title,
-          ),
-          IconButton(
-            icon: Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                color: Colors.red[400],
-                borderRadius: BorderRadius.circular(3),
-              ),
-              child: Icon(
-                Icons.add,
-                color: Theme.of(context).backgroundColor,
-              ),
-            ),
-            onPressed: () {},
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSalutation(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Good Afternoon,',
-          style: Theme.of(context).primaryTextTheme.headline,
-        ),
-        SizedBox(height: 3.5),
-        Text(
-          'Sean Urgel',
-          style: Theme.of(context).primaryTextTheme.subtitle,
-        )
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     timeDilation = 1.1;
@@ -200,6 +153,53 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTaskActionWithTitle(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'Tasks List',
+            style: Theme.of(context).primaryTextTheme.title,
+          ),
+          IconButton(
+            icon: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                color: Colors.red[400],
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).backgroundColor,
+              ),
+            ),
+            onPressed: () {},
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSalutation(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Good Afternoon,',
+          style: Theme.of(context).primaryTextTheme.headline,
+        ),
+        SizedBox(height: 3.5),
+        Text(
+          'Sean Urgel',
+          style: Theme.of(context).primaryTextTheme.subtitle,
+        )
+      ],
     );
   }
 }
