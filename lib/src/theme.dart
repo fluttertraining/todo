@@ -8,6 +8,7 @@ final themeData = ThemeData(
   primaryColor: deepBlue,
   accentColor: greyBlue,
   backgroundColor: grey,
+  fontFamily: 'Product Sans',
   scaffoldBackgroundColor: grey,
   primaryTextTheme: TextTheme(
     subtitle: TextStyle(

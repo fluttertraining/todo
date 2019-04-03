@@ -40,8 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  Widget _buildTaskListCard(
-      BuildContext context, Color color, String title, String tag) {
+  Widget _buildTaskListCard(BuildContext context, color, title, tag) {
     var textStyle = color == Theme.of(context).primaryColor
         ? Theme.of(context).primaryTextTheme.title.copyWith(color: Colors.white)
         : Theme.of(context).primaryTextTheme.title;
@@ -86,34 +85,37 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Row _buildTaskActionWithTitle(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          'Tasks List',
-          style: Theme.of(context).primaryTextTheme.title,
-        ),
-        IconButton(
-          icon: Container(
-            height: 30,
-            width: 30,
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: Icon(
-              Icons.add,
-              color: Theme.of(context).backgroundColor,
-            ),
+  Widget _buildTaskActionWithTitle(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'Tasks List',
+            style: Theme.of(context).primaryTextTheme.title,
           ),
-          onPressed: () {},
-        )
-      ],
+          IconButton(
+            icon: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                color: Colors.red[400],
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).backgroundColor,
+              ),
+            ),
+            onPressed: () {},
+          )
+        ],
+      ),
     );
   }
 
-  Column _buildSalutation(BuildContext context) {
+  Widget _buildSalutation(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -169,40 +171,41 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 25),
-              child: _buildTaskActionWithTitle(context),
-            ),
-            SizedBox(height: 10),
-            Container(
-              padding: EdgeInsets.only(left: 30),
-              margin: EdgeInsets.only(
-                bottom: 30,
-              ),
-              height: MediaQuery.of(context).size.height * .3,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  _buildTaskListCard(
-                    context,
-                    Colors.white,
-                    'Daily Tasks',
-                    'TaskList1',
+            Column(
+              children: <Widget>[
+                _buildTaskActionWithTitle(context),
+                SizedBox(height: 10),
+                Container(
+                  padding: EdgeInsets.only(left: 30),
+                  margin: EdgeInsets.only(
+                    bottom: 30,
                   ),
-                  _buildTaskListCard(
-                    context,
-                    Theme.of(context).primaryColor,
-                    'Another Task',
-                    'TaskList2',
+                  height: MediaQuery.of(context).size.height * .3,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      _buildTaskListCard(
+                        context,
+                        Colors.white,
+                        'Daily Tasks',
+                        'TaskList1',
+                      ),
+                      _buildTaskListCard(
+                        context,
+                        Theme.of(context).primaryColor,
+                        'Another Task',
+                        'TaskList2',
+                      ),
+                      _buildTaskListCard(
+                        context,
+                        Colors.white,
+                        'And another task',
+                        'TaskList3',
+                      ),
+                    ],
                   ),
-                  _buildTaskListCard(
-                    context,
-                    Colors.white,
-                    'And another task',
-                    'TaskList3',
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
