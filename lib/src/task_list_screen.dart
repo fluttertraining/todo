@@ -71,17 +71,18 @@ class TaskListScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height - 300,
-                  padding: const EdgeInsets.only(left: 20),
-                  child: ListView.builder(
-                    itemCount: this.todos.length,
-                    itemBuilder: (BuildContext context, ndx) => _TaskItem(
-                          color: color,
-                          textStyle: textStyle,
-                          taskName: this.todos[ndx].taskName,
-                          isFinished: this.todos[ndx].isFinished,
-                        ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: ListView.builder(
+                      itemCount: this.todos.length,
+                      itemBuilder: (BuildContext context, ndx) => _TaskItem(
+                            color: color,
+                            textStyle: textStyle,
+                            taskName: this.todos[ndx].taskName,
+                            isFinished: this.todos[ndx].isFinished,
+                          ),
+                    ),
                   ),
                 )
               ],
