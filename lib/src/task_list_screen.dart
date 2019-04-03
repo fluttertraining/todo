@@ -68,22 +68,26 @@ class TaskListScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Row(
-                  children: <Widget>[
-                    Material(
-                      elevation: 0,
-                      color: color,
-                      child: Checkbox(
-                        value: true,
-                        onChanged: (value) {},
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Row(
+                    children: <Widget>[
+                      Material(
+                        elevation: 0,
+                        color: color,
+                        child: Checkbox(
+                          value: true,
+                          onChanged: (value) {},
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Sup',
-                      style: textStyle,
-                    ),
-                  ],
+                      Text(
+                        'Sup',
+                        style: textStyle,
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
