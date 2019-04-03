@@ -84,7 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void startTimer() {
+    if (_timer != null && _timer.isActive) {
+      _timer.cancel();
+      return;
+    }
+
     const oneSecond = const Duration(seconds: 1);
+
     _timer = Timer.periodic(
       oneSecond,
       (Timer timer) => setState(() {
