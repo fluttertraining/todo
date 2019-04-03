@@ -6,8 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
 import './src/list_item.dart';
-import './src/route_animations.dart';
-import './src/task_list_screen.dart';
+
+import './src/task_list_card.dart';
 import './src/theme.dart';
 import './src/todo.dart';
 
@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: this.listItems.length,
-                    itemBuilder: (BuildContext context, ndx) => _TaskListCard(
+                    itemBuilder: (BuildContext context, ndx) => TaskListCard(
                           context: context,
                           color: this.listItems[ndx].color,
                           title: this.listItems[ndx].text,
@@ -218,136 +218,6 @@ class _MyHomePageState extends State<MyHomePage> {
           style: Theme.of(context).primaryTextTheme.subtitle,
         )
       ],
-    );
-  }
-}
-
-class _TaskListCard extends StatelessWidget {
-  final BuildContext context;
-  final Color color;
-  final String title;
-  final String tag;
-  final Color accentColor;
-  final List<Todo> todos;
-
-  const _TaskListCard({
-    Key key,
-    @required this.context,
-    @required this.color,
-    @required this.title,
-    @required this.tag,
-    @required this.accentColor,
-    @required this.todos,
-  }) : super(key: key);
-
-  void navigateToToScreen(TextStyle titleStyle) {
-    Navigator.of(context).push(
-      FadeInSlideOutRoute(
-        builder: (BuildContext context) => TaskListScreen(
-              title: title,
-              textStyle: titleStyle,
-              color: color,
-              tag: tag,
-              todos: todos,
-              accentColor: color == Colors.white ? deepBlue : Colors.white,
-            ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var titleStyle;
-    var listItemStyle;
-
-    if (color == Theme.of(context).primaryColor) {
-      titleStyle =
-          Theme.of(context).textTheme.title.copyWith(color: Colors.white);
-      listItemStyle = Theme.of(context)
-          .primaryTextTheme
-          .subtitle
-          .copyWith(color: Colors.white);
-    } else {
-      titleStyle = Theme.of(context).textTheme.title;
-      listItemStyle = Theme.of(context)
-          .primaryTextTheme
-          .subtitle
-          .copyWith(color: Theme.of(context).accentColor);
-    }
-
-    return GestureDetector(
-      onTap: () => navigateToToScreen(titleStyle),
-      child: Hero(
-        tag: tag,
-        child: _buildCardContainer(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(title, style: titleStyle),
-                      Material(
-                        elevation: 0,
-                        color: color,
-                        child: IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () {},
-                          iconSize: 26,
-                          color: accentColor,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: <Widget>[
-                      Material(
-                        elevation: 0,
-                        color: color,
-                        child: Checkbox(
-                          value: true,
-                          onChanged: (value) {},
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                        ),
-                      ),
-                      Text(
-                        'Sup',
-                        style: listItemStyle,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container _buildCardContainer({@required Widget child}) {
-    return Container(
-      width: 220.0,
-      margin: EdgeInsets.only(right: 22.5, bottom: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromRGBO(225, 232, 238, 1),
-            offset: Offset(12, 12),
-          ),
-        ],
-      ),
-      child: child,
     );
   }
 }
