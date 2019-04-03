@@ -129,19 +129,30 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.symmetric(horizontal: 25),
               child: _buildSalutation(context),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .2,
-              child: Center(
-                child: GestureDetector(
+            Expanded(
+              child: GestureDetector(
                   onTap: this.startTimer,
-                  child: CustomPaint(
-                    painter: ClockPainter(
-                      percentage: percentage,
-                      timeRemaining: timerString(),
-                    ),
-                  ),
-                ),
-              ),
+                  child: LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints size) =>
+                        Stack(
+                          children: <Widget>[
+                            Positioned(
+                              top: size.maxHeight / 2,
+                              left: size.maxWidth / 2,
+                              child: CustomPaint(
+                                painter: ClockPainter(
+                                  percentage: percentage,
+                                  timeRemaining: timerString(),
+                                ),
+                                child: Container(
+                                  height: size.maxHeight,
+                                  width: size.maxWidth,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                  )),
             ),
             Column(
               children: <Widget>[
@@ -252,8 +263,6 @@ class ClockPainter extends CustomPainter {
       var rad = this.degreesToRadians((ctr * 6) - 90);
       var x = radius * math.cos(rad);
       var y = radius * math.sin(rad);
-
-      print(ctr / bars);
 
       if (ctr / bars >= percentage) {
         canvas.drawLine(Offset(x, y), Offset.zero, inactiveLinePaint);
