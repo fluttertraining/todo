@@ -26,6 +26,14 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
+  String getTaskNameWithDate(int ndx) {
+    final amOrPm = (widget.todos[ndx].date.hour % 12 == 0) ? 'AM' : 'PM';
+    final hour = (widget.todos[ndx].date.hour % 12).toString();
+    final minutes = widget.todos[ndx].date.minute.toString();
+
+    return this.widget.todos[ndx].taskName + " at $hour:$minutes $amOrPm";
+  }
+
   onPressTask(int ndx) => (bool value) {
         setState(() {
           widget.todos[ndx].isFinished = value;
@@ -89,10 +97,11 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     padding: const EdgeInsets.only(left: 20),
                     child: ListView.builder(
                       itemCount: this.widget.todos.length,
+                      padding: EdgeInsets.only(top: 0),
                       itemBuilder: (BuildContext context, ndx) => TaskItem(
                             color: widget.color,
                             textStyle: widget.textStyle,
-                            taskName: this.widget.todos[ndx].taskName,
+                            taskName: getTaskNameWithDate(ndx),
                             isFinished: this.widget.todos[ndx].isFinished,
                             onPressTask: this.onPressTask(ndx),
                           ),

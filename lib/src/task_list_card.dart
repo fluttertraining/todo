@@ -28,7 +28,7 @@ class TaskListCard extends StatefulWidget {
 }
 
 class _TaskListCardState extends State<TaskListCard> {
-  void navigateToToScreen(TextStyle titleStyle) {
+  void navigateToListScreen(TextStyle titleStyle) {
     Navigator.of(widget.context).push(
       FadeInSlideOutRoute(
         builder: (BuildContext context) => TaskListScreen(
@@ -71,7 +71,7 @@ class _TaskListCardState extends State<TaskListCard> {
     }
 
     return GestureDetector(
-      onTap: () => navigateToToScreen(titleStyle),
+      onTap: () => navigateToListScreen(titleStyle),
       child: Hero(
         tag: widget.tag,
         child: Container(
@@ -116,6 +116,7 @@ class _TaskListCardState extends State<TaskListCard> {
                     padding: const EdgeInsets.only(left: 20),
                     child: ListView.builder(
                       itemCount: widget.todos.length,
+                      padding: EdgeInsets.only(top: 0),
                       itemBuilder: (BuildContext context, ndx) => TaskItem(
                             color: widget.color,
                             textStyle: listItemStyle,

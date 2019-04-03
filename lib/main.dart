@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    timeDilation = 1.1;
+    timeDilation = 1.15;
 
     return Scaffold(
       appBar: AppBar(
@@ -253,10 +253,12 @@ class ClockPainter extends CustomPainter {
       var x = radius * math.cos(rad);
       var y = radius * math.sin(rad);
 
+      print(ctr / bars);
+
       if (ctr / bars >= percentage) {
-        canvas.drawLine(Offset(x, y), Offset.zero, activeLinePaint);
-      } else {
         canvas.drawLine(Offset(x, y), Offset.zero, inactiveLinePaint);
+      } else {
+        canvas.drawLine(Offset(x, y), Offset.zero, activeLinePaint);
       }
     }
 

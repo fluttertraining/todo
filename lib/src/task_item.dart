@@ -32,6 +32,8 @@ class TaskItem extends StatelessWidget {
         Text(
           this.taskName,
           style: textStyle,
+          overflow: TextOverflow.fade,
+          softWrap: true,
         ),
       ],
     );
