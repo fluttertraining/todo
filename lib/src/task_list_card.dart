@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './route_animations.dart';
-import './task_item.dart';
+import './task.dart';
 import './task_list_screen.dart';
 import './theme.dart';
 import './todo.dart';
@@ -44,11 +44,9 @@ class _TaskListCardState extends State<TaskListCard> {
     );
   }
 
-  onPressTask(int ndx) => (bool value) {
-        setState(() {
-          widget.todos[ndx].isFinished = value;
-        });
-      };
+  void onPressTask(int ndx) => (bool value) => setState(() {
+        widget.todos[ndx].isFinished = value;
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -74,63 +72,15 @@ class _TaskListCardState extends State<TaskListCard> {
       onTap: () => navigateToListScreen(titleStyle),
       child: Hero(
         tag: widget.tag,
-        child: Container(
-          width: 220.0,
-          margin: EdgeInsets.only(right: 22.5, bottom: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: widget.color,
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromRGBO(225, 232, 238, 1),
-                offset: Offset(12, 12),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(top: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(widget.title, style: titleStyle),
-                      Material(
-                        elevation: 0,
-                        color: widget.color,
-                        child: IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () {},
-                          iconSize: 26,
-                          color: widget.accentColor,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: ListView.builder(
-                      itemCount: widget.todos.length,
-                      padding: EdgeInsets.only(top: 0),
-                      itemBuilder: (BuildContext context, ndx) => TaskItem(
-                            color: widget.color,
-                            textStyle: listItemStyle,
-                            taskName: widget.todos[ndx].taskName,
-                            isFinished: widget.todos[ndx].isFinished,
-                            onPressTask: onPressTask(ndx),
-                            accentColor: widget.accentColor,
-                          ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
+        child: new Task(
+          titleStyle: titleStyle,
+          listItemStyle: listItemStyle,
+          title: widget.title,
+          color: widget.color,
+          tag: widget.tag,
+          todos: widget.todos,
+          accentColor: widget.color == Colors.white ? deepBlue : Colors.white,
+          onPressTask: onPressTask,
         ),
       ),
     );
