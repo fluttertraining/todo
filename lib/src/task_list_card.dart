@@ -28,12 +28,11 @@ class TaskListCard extends StatefulWidget {
 }
 
 class _TaskListCardState extends State<TaskListCard> {
-  void navigateToListScreen(TextStyle titleStyle) {
+  void navigateToListScreen() {
     Navigator.of(widget.context).push(
       FadeInSlideOutRoute(
         builder: (BuildContext context) => TaskListScreen(
               title: widget.title,
-              textStyle: titleStyle,
               color: widget.color,
               tag: widget.tag,
               todos: widget.todos,
@@ -50,34 +49,13 @@ class _TaskListCardState extends State<TaskListCard> {
 
   @override
   Widget build(BuildContext context) {
-    var titleStyle;
-    var listItemStyle;
-
-    if (widget.color == Theme.of(context).primaryColor) {
-      titleStyle =
-          Theme.of(context).textTheme.title.copyWith(color: Colors.white);
-      listItemStyle = Theme.of(context)
-          .primaryTextTheme
-          .subtitle
-          .copyWith(color: Colors.white);
-    } else {
-      titleStyle = Theme.of(context).textTheme.title;
-      listItemStyle = Theme.of(context)
-          .primaryTextTheme
-          .subtitle
-          .copyWith(color: Theme.of(context).accentColor);
-    }
-
     return GestureDetector(
-      onTap: () => navigateToListScreen(titleStyle),
+      onTap: this.navigateToListScreen,
       child: Hero(
         tag: widget.tag,
         child: new Task(
-          titleStyle: titleStyle,
-          listItemStyle: listItemStyle,
           title: widget.title,
           color: widget.color,
-          tag: widget.tag,
           todos: widget.todos,
           accentColor: widget.color == Colors.white ? deepBlue : Colors.white,
           onPressTask: onPressTask,

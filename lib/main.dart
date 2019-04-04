@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+          children: [
             IconButton(
               icon: Icon(Icons.menu),
               color: Theme.of(context).accentColor,
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 25),
               child: new _Salutation(fullName: 'Sean Urgel'),
@@ -148,26 +148,31 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Column(
-              children: <Widget>[
-                _buildTaskActionWithTitle(context),
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: _buildTaskActionWithTitle(context),
+                ),
                 SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.only(left: 30),
-                  margin: EdgeInsets.only(
-                    bottom: 30,
-                  ),
+                  margin: EdgeInsets.only(bottom: 30),
                   height: MediaQuery.of(context).size.height * .3,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: this.listItems.length,
-                    itemBuilder: (BuildContext context, ndx) => TaskListCard(
-                          context: context,
-                          color: this.listItems[ndx].color,
-                          title: this.listItems[ndx].text,
-                          accentColor: this.listItems[ndx].accentColor,
-                          todos: this.listItems[ndx].todos ?? [],
-                          tag: 'TaskList$ndx',
-                        ),
+                    itemBuilder: (BuildContext context, ndx) {
+                      final MyListItem listItem = this.listItems[ndx];
+
+                      return TaskListCard(
+                        context: context,
+                        color: listItem.color,
+                        title: listItem.text,
+                        accentColor: listItem.accentColor,
+                        todos: listItem.todos ?? [],
+                        tag: 'TaskList$ndx',
+                      );
+                    },
                   ),
                 ),
               ],
@@ -179,32 +184,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildTaskActionWithTitle(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            'Tasks List',
-            style: Theme.of(context).primaryTextTheme.title,
-          ),
-          IconButton(
-            icon: Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                color: Colors.red[400],
-                borderRadius: BorderRadius.circular(3),
-              ),
-              child: Icon(
-                Icons.add,
-                color: Theme.of(context).backgroundColor,
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Tasks List',
+          style: Theme.of(context).primaryTextTheme.title,
+        ),
+        IconButton(
+          icon: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              color: Colors.red[400],
+              borderRadius: BorderRadius.circular(3),
             ),
-            onPressed: () {},
-          )
-        ],
-      ),
+            child: Icon(
+              Icons.add,
+              color: Theme.of(context).backgroundColor,
+            ),
+          ),
+          onPressed: () {},
+        )
+      ],
     );
   }
 }
@@ -232,7 +234,7 @@ class _Salutation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Text(
           this.generateGreeting(),
           style: Theme.of(context).primaryTextTheme.headline,
@@ -293,7 +295,10 @@ class ClockPainter extends CustomPainter {
     }
 
     canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), radius - 12.5, circlePaint);
+      Offset(size.width / 2, size.height / 2),
+      radius - 12.5,
+      circlePaint,
+    );
 
     var splitTime = timeRemaining.split('.');
 
