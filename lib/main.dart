@@ -34,10 +34,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Duration duration;
-  double percentage = 0;
+  Duration _duration;
+  double _percentage = 0;
   Timer _timer;
-  int start;
+  int _start;
 
   final List<MyListItem> listItems = [
     MyListItem(
@@ -63,22 +63,22 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     super.initState();
 
-    duration = Duration(minutes: 1);
-    start = duration.inSeconds;
+    _duration = Duration(minutes: 1);
+    _start = _duration.inSeconds;
     // startTimer();
   }
 
   String timerString() {
-    var h = (start / 3600).floor().toString();
+    var h = (_start / 3600).floor().toString();
 
     // Add trailing zeros if numbers reach 1 digit.
-    var m = (start % 3600 / 60).floor() % 10 > 10
-        ? (start % 3600 / 60).floor().toString()
-        : (start % 3600 / 60).floor().toString().padLeft(2, '0');
+    var m = (_start % 3600 / 60).floor() % 10 > 10
+        ? (_start % 3600 / 60).floor().toString()
+        : (_start % 3600 / 60).floor().toString().padLeft(2, '0');
 
-    var s = (start % 3600 % 60) % 10 > 10
-        ? (start % 3600 % 60).floor().toString()
-        : (start % 3600 % 60).floor().toString().padLeft(2, '0');
+    var s = (_start % 3600 % 60) % 10 > 10
+        ? (_start % 3600 % 60).floor().toString()
+        : (_start % 3600 % 60).floor().toString().padLeft(2, '0');
 
     return "$h:$m:$s";
   }
@@ -94,11 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
     _timer = Timer.periodic(
       oneSecond,
       (Timer timer) => setState(() {
-            if (start < 1) {
+            if (_start < 1) {
               timer.cancel();
             } else {
-              start = start - 1;
-              percentage = .99 - (start / duration.inSeconds);
+              _start = _start - 1;
+              _percentage = .99 - (_start / _duration.inSeconds);
             }
           }),
     );
@@ -133,14 +133,14 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.symmetric(horizontal: 25),
-              child: _buildSalutation(context),
+              child: new _Salutation(fullName: 'Sean Urgel'),
             ),
             Expanded(
               child: GestureDetector(
                 onTap: this.startTimer,
                 child: CustomPaint(
                   painter: ClockPainter(
-                    percentage: percentage,
+                    percentage: _percentage,
                     timeRemaining: timerString(),
                   ),
                   child: Container(),
@@ -207,18 +207,39 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
 
-  Widget _buildSalutation(BuildContext context) {
+class _Salutation extends StatelessWidget {
+  static final d = DateTime.now();
+
+  final String fullName;
+
+  _Salutation({Key key, this.fullName}) : super(key: key);
+
+  String generateGreeting() {
+    if (d.hour >= 18) {
+      return 'Good Evening,';
+    }
+
+    if (d.hour >= 11) {
+      return 'Good Afternoon,';
+    }
+
+    return 'Good Morning,';
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Good Afternoon,',
+          this.generateGreeting(),
           style: Theme.of(context).primaryTextTheme.headline,
         ),
         SizedBox(height: 3.5),
         Text(
-          'Sean Urgel',
+          this.fullName,
           style: Theme.of(context).primaryTextTheme.subtitle,
         )
       ],
@@ -243,7 +264,6 @@ class ClockPainter extends CustomPainter {
     ..color = Color.fromRGBO(222, 234, 246, 1)
     ..strokeWidth = 4;
 
-  var circleShadowPaint = Paint()..color = Colors.grey;
   var circlePaint = Paint()..color = Colors.white;
 
   double degreesToRadians(degrees) {
