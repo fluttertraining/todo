@@ -116,7 +116,7 @@ class Task extends StatelessWidget {
                         onPressTask: this.onPressTask(ndx),
                         accentColor: this.accentColor,
                         isSelected: this.isSelected,
-                        taskTime: getTaskTime(ndx),
+                        taskTime: getTaskTime(ndx) ?? "",
                       ),
                 ),
               ),

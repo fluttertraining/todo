@@ -24,6 +24,8 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
+  final double appBarHeight = 100.0;
+
   onPressTask(int ndx) => (bool value) {
         setState(() {
           widget.todos[ndx].isFinished = value;
@@ -33,16 +35,23 @@ class _TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        actions: [
-          CircleAvatar(
-            child: Text('S'),
+      appBar: PreferredSize(
+        preferredSize: Size(double.infinity, double.maxFinite),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          height: appBarHeight,
+          child: AppBar(
+            elevation: 0,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+            actions: [
+              CircleAvatar(
+                child: Text('S'),
+              ),
+              Padding(padding: EdgeInsets.only(right: 16))
+            ],
           ),
-          Padding(padding: EdgeInsets.only(right: 16))
-        ],
+        ),
       ),
       body: Hero(
         tag: widget.tag,
