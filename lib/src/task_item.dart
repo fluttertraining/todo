@@ -41,16 +41,20 @@ class TaskItem extends StatelessWidget {
       Flexible(
         child: Row(
           children: <Widget>[
-            Text(
-              this.isSelected ? "$taskName at" : taskName,
-              style: textStyle,
-              overflow: TextOverflow.fade,
-              softWrap: true,
+            Flexible(
+              child: Text(
+                this.isSelected ? "$taskName at" : taskName,
+                style: textStyle,
+                overflow: TextOverflow.fade,
+                softWrap: true,
+              ),
             ),
             this.isSelected
-                ? Text(
-                    " $taskTime",
-                    style: textStyle.copyWith(color: this.accentColor),
+                ? Flexible(
+                    child: Text(
+                      " $taskTime",
+                      style: textStyle.copyWith(color: this.accentColor),
+                    ),
                   )
                 : null
           ].where(notNull).toList(),

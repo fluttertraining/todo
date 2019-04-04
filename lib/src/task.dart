@@ -22,12 +22,11 @@ class Task extends StatelessWidget {
   }) : super(key: key);
 
   String getTaskTime(int ndx) {
+    // TODO (Sean Urgel): Fix bug where 12pm would become 0:00
     final amOrPm = (this.todos[ndx].date.hour < 12) ? 'AM' : 'PM';
 
     final hour = (this.todos[ndx].date.hour % 12).toString();
     final minutes = this.todos[ndx].date.minute;
-
-    print(this.todos[ndx].date.hour % 12);
 
     var formattedMinutes = minutes >= 10
         ? this.todos[ndx].date.minute.toString()
