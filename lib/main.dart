@@ -34,10 +34,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Duration _duration;
-  double _percentage = 0;
+  static Duration _duration = Duration(minutes: 5);
   Timer _timer;
-  int _start;
+  double _percentage = 0;
+  int _start = _duration.inSeconds;
 
   final List<MyListItem> listItems = [
     MyListItem(
@@ -59,14 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     ),
   ];
-
-  initState() {
-    super.initState();
-
-    _duration = Duration(minutes: 1);
-    _start = _duration.inSeconds;
-    // startTimer();
-  }
 
   String timerString() {
     var h = (_start / 3600).floor().toString();

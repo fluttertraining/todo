@@ -21,6 +21,21 @@ class Task extends StatelessWidget {
     this.isSelected = false,
   }) : super(key: key);
 
+  String getTaskNameWithDate(int ndx) {
+    final amOrPm = (this.todos[ndx].date.hour < 12) ? 'AM' : 'PM';
+
+    final hour = (this.todos[ndx].date.hour % 12).toString();
+    final minutes = this.todos[ndx].date.minute;
+
+    print(this.todos[ndx].date.hour % 12);
+
+    var formattedMinutes = minutes >= 10
+        ? this.todos[ndx].date.minute.toString()
+        : "0" + this.todos[ndx].date.minute.toString();
+
+    return this.todos[ndx].taskName + " at $hour:$formattedMinutes $amOrPm";
+  }
+
   @override
   Widget build(BuildContext context) {
     var titleStyle;
@@ -29,16 +44,18 @@ class Task extends StatelessWidget {
     if (this.color == Theme.of(context).primaryColor) {
       titleStyle =
           Theme.of(context).textTheme.title.copyWith(color: Colors.white);
-      listItemStyle = Theme.of(context)
-          .primaryTextTheme
-          .subtitle
-          .copyWith(color: Colors.white);
+      listItemStyle = Theme.of(context).primaryTextTheme.subtitle.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.4,
+          );
     } else {
       titleStyle = Theme.of(context).textTheme.title;
-      listItemStyle = Theme.of(context)
-          .primaryTextTheme
-          .subtitle
-          .copyWith(color: Theme.of(context).accentColor);
+      listItemStyle = Theme.of(context).primaryTextTheme.subtitle.copyWith(
+            color: Theme.of(context).accentColor,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.4,
+          );
     }
 
     return Container(
@@ -95,7 +112,9 @@ class Task extends StatelessWidget {
                   itemBuilder: (BuildContext context, ndx) => TaskItem(
                         color: this.color,
                         textStyle: listItemStyle,
-                        taskName: this.todos[ndx].taskName,
+                        taskName: this.isSelected
+                            ? getTaskNameWithDate(ndx)
+                            : this.todos[ndx].taskName,
                         isFinished: this.todos[ndx].isFinished,
                         onPressTask: this.onPressTask(ndx),
                         accentColor: this.accentColor,

@@ -5,7 +5,6 @@ import './todo.dart';
 
 class TaskListScreen extends StatefulWidget {
   final String title;
-
   final Color color;
   final Color accentColor;
   final String tag;
@@ -25,22 +24,6 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
-  String getTaskNameWithDate(int ndx) {
-    final amOrPm = (widget.todos[ndx].date.hour < 12) ? 'AM' : 'PM';
-
-    final hour = (widget.todos[ndx].date.hour % 12).toString();
-    final minutes = widget.todos[ndx].date.minute;
-
-    print(widget.todos[ndx].date.hour % 12);
-
-    var formattedMinutes = minutes >= 10
-        ? widget.todos[ndx].date.minute.toString()
-        : "0" + widget.todos[ndx].date.minute.toString();
-
-    return this.widget.todos[ndx].taskName +
-        " at $hour:$formattedMinutes $amOrPm";
-  }
-
   onPressTask(int ndx) => (bool value) {
         setState(() {
           widget.todos[ndx].isFinished = value;
