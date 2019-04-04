@@ -21,7 +21,7 @@ class Task extends StatelessWidget {
     this.isSelected = false,
   }) : super(key: key);
 
-  String getTaskNameWithDate(int ndx) {
+  String getTaskTime(int ndx) {
     final amOrPm = (this.todos[ndx].date.hour < 12) ? 'AM' : 'PM';
 
     final hour = (this.todos[ndx].date.hour % 12).toString();
@@ -33,7 +33,7 @@ class Task extends StatelessWidget {
         ? this.todos[ndx].date.minute.toString()
         : "0" + this.todos[ndx].date.minute.toString();
 
-    return this.todos[ndx].taskName + " at $hour:$formattedMinutes $amOrPm";
+    return "$hour:$formattedMinutes $amOrPm";
   }
 
   @override
@@ -112,12 +112,12 @@ class Task extends StatelessWidget {
                   itemBuilder: (BuildContext context, ndx) => TaskItem(
                         color: this.color,
                         textStyle: listItemStyle,
-                        taskName: this.isSelected
-                            ? getTaskNameWithDate(ndx)
-                            : this.todos[ndx].taskName,
+                        taskName: this.todos[ndx].taskName,
                         isFinished: this.todos[ndx].isFinished,
                         onPressTask: this.onPressTask(ndx),
                         accentColor: this.accentColor,
+                        isSelected: this.isSelected,
+                        taskTime: getTaskTime(ndx),
                       ),
                 ),
               ),

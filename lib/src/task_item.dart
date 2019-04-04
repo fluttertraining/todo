@@ -7,6 +7,8 @@ class TaskItem extends StatelessWidget {
   final String taskName;
   final bool isFinished;
   final Function onPressTask;
+  final bool isSelected;
+  final String taskTime;
 
   TaskItem({
     Key key,
@@ -16,32 +18,44 @@ class TaskItem extends StatelessWidget {
     @required this.isFinished,
     @required this.onPressTask,
     @required this.accentColor,
+    this.taskTime,
+    this.isSelected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Material(
-          elevation: 0,
-          color: color,
-          child: Checkbox(
-            value: this.isFinished,
-            onChanged: onPressTask,
-            activeColor: accentColor,
-            checkColor: color,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
+    bool notNull(Object o) => o != null;
+
+    return Row(children: <Widget>[
+      Material(
+        elevation: 0,
+        color: color,
+        child: Checkbox(
+          value: this.isFinished,
+          onChanged: onPressTask,
+          activeColor: accentColor,
+          checkColor: color,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        Flexible(
-          child: Text(
-            this.taskName,
-            style: textStyle,
-            overflow: TextOverflow.fade,
-            softWrap: true,
-          ),
+      ),
+      Flexible(
+        child: Row(
+          children: <Widget>[
+            Text(
+              this.isSelected ? "$taskName at" : taskName,
+              style: textStyle,
+              overflow: TextOverflow.fade,
+              softWrap: true,
+            ),
+            this.isSelected
+                ? Text(
+                    " $taskTime",
+                    style: textStyle.copyWith(color: this.accentColor),
+                  )
+                : null
+          ].where(notNull).toList(),
         ),
-      ],
-    );
+      ),
+    ]);
   }
 }
