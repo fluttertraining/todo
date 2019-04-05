@@ -13,8 +13,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Container(
         color: widget.backgroundColor,
+        child: Center(
+          child: Text('Hello Wolrd'),
+        ),
       ),
     );
   }

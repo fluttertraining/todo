@@ -37,7 +37,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
   void onPressAdd(BuildContext context) {
     Navigator.of(context).push(
-      FadeInFadeOut(
+      NoAnimationSlideDown(
         builder: (BuildContext context) => CreateTaskScreen(
               backgroundColor: widget.color,
             ),
