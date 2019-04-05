@@ -3,7 +3,7 @@ import './route_animations.dart';
 import './task.dart';
 import '../config/theme.dart';
 import '../models/todo.dart';
-import '../screens/task_list_screen.dart';
+import '../screens/task_list.dart';
 
 class TaskListCard extends StatefulWidget {
   final BuildContext context;
