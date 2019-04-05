@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './task.dart';
-import './todo.dart';
+import '../models/todo.dart';
+import '../widgets/task.dart';
 
 class TaskListScreen extends StatefulWidget {
   final String title;
@@ -24,7 +24,8 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
-  final double appBarHeight = 100.0;
+  bool isAdding = false;
+  double appBarHeight = 120.0;
 
   onPressTask(int ndx) => (bool value) {
         setState(() {
@@ -32,24 +33,37 @@ class _TaskListScreenState extends State<TaskListScreen> {
         });
       };
 
+  void onPressAdd() {
+    setState(() {
+      isAdding = !isAdding;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, double.maxFinite),
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 100),
-          height: appBarHeight,
-          child: AppBar(
-            elevation: 0,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-            actions: [
-              CircleAvatar(
-                child: Text('S'),
+          duration: Duration(milliseconds: 150),
+          height: isAdding ? 80 : appBarHeight,
+          child: GestureDetector(
+            onTap: isAdding ? this.onPressAdd : null,
+            child: AnimatedOpacity(
+              opacity: isAdding ? 0 : 1,
+              duration: Duration(milliseconds: 150),
+              child: AppBar(
+                elevation: 0,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+                actions: [
+                  CircleAvatar(
+                    child: Text('S'),
+                  ),
+                  Padding(padding: EdgeInsets.only(right: 16))
+                ],
               ),
-              Padding(padding: EdgeInsets.only(right: 16))
-            ],
+            ),
           ),
         ),
       ),
@@ -62,6 +76,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
           todos: widget.todos,
           onPressTask: this.onPressTask,
           isSelected: true,
+          onPressAdd: this.onPressAdd,
         ),
       ),
     );

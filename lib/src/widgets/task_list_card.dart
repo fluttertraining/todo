@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import './route_animations.dart';
 import './task.dart';
-import './task_list_screen.dart';
-import './theme.dart';
-import './todo.dart';
+import '../config/theme.dart';
+import '../models/todo.dart';
+import '../screens/task_list_screen.dart';
 
 class TaskListCard extends StatefulWidget {
   final BuildContext context;

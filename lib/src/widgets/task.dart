@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/todo.dart';
 import './task_item.dart';
-import './todo.dart';
 
 class Task extends StatelessWidget {
   final Color color;
@@ -10,6 +10,7 @@ class Task extends StatelessWidget {
   final List<Todo> todos;
   final Function onPressTask;
   final bool isSelected;
+  final Function onPressAdd;
 
   Task({
     Key key,
@@ -18,6 +19,7 @@ class Task extends StatelessWidget {
     @required this.title,
     @required this.accentColor,
     @required this.todos,
+    this.onPressAdd,
     this.isSelected = false,
   }) : super(key: key);
 
@@ -60,7 +62,7 @@ class Task extends StatelessWidget {
     return Container(
       width: this.isSelected ? MediaQuery.of(context).size.width : 220.0,
       margin: this.isSelected
-          ? EdgeInsets.only(top: 20)
+          ? EdgeInsets.only(top: 0)
           : EdgeInsets.only(right: 22.5, bottom: 10),
       decoration: BoxDecoration(
         borderRadius: this.isSelected
@@ -94,7 +96,7 @@ class Task extends StatelessWidget {
                     color: this.color,
                     child: IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: () {},
+                      onPressed: this.onPressAdd,
                       iconSize: this.isSelected ? 36 : 26,
                       color: this.accentColor,
                     ),

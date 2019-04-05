@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
-import './src/list_item.dart';
+import './src/config/theme.dart';
 
-import './src/task_list_card.dart';
-import './src/theme.dart';
-import './src/todo.dart';
+import './src/models/list_item.dart';
+import './src/models/todo.dart';
+
+import './src/widgets/task_list_card.dart';
 
 void main() {
   return runApp(MyApp());

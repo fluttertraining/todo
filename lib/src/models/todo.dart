@@ -5,5 +5,9 @@ class Todo {
   String taskName;
   DateTime date;
 
-  Todo({this.isFinished = false, @required this.taskName, this.date});
+  Todo({
+    this.isFinished = false,
+    @required this.taskName,
+    this.date,
+  });
 }
