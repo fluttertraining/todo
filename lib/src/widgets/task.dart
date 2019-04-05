@@ -42,6 +42,8 @@ class Task extends StatelessWidget {
     var titleStyle;
     var listItemStyle;
 
+    // TODO (Sean Urgel): Improve this, in a way where we don't have
+    // to use if else statements anymore.
     if (this.color == Theme.of(context).primaryColor) {
       titleStyle =
           Theme.of(context).textTheme.title.copyWith(color: Colors.white);

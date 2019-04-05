@@ -158,7 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       final MyListItem listItem = this.listItems[ndx];
 
                       return TaskListCard(
-                        context: context,
                         color: listItem.color,
                         title: listItem.text,
                         accentColor: listItem.accentColor,

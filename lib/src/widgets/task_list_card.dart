@@ -6,7 +6,6 @@ import '../models/todo.dart';
 import '../screens/task_list.dart';
 
 class TaskListCard extends StatefulWidget {
-  final BuildContext context;
   final Color color;
   final String title;
   final String tag;
@@ -15,7 +14,6 @@ class TaskListCard extends StatefulWidget {
 
   const TaskListCard({
     Key key,
-    @required this.context,
     @required this.color,
     @required this.title,
     @required this.tag,
@@ -28,9 +26,9 @@ class TaskListCard extends StatefulWidget {
 }
 
 class _TaskListCardState extends State<TaskListCard> {
-  void navigateToListScreen() {
-    Navigator.of(widget.context).push(
-      FadeInSlideOutRoute(
+  void navigateToListScreen(BuildContext context) {
+    Navigator.of(context).push(
+      FadeInFadeOut(
         builder: (BuildContext context) => TaskListScreen(
               title: widget.title,
               color: widget.color,
@@ -50,7 +48,7 @@ class _TaskListCardState extends State<TaskListCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: this.navigateToListScreen,
+      onTap: () => this.navigateToListScreen(context),
       child: Hero(
         tag: widget.tag,
         child: new Task(
