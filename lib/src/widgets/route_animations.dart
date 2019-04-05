@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class FadeInSlideOutRoute<T> extends CupertinoPageRoute<T> {
-  FadeInSlideOutRoute({WidgetBuilder builder, RouteSettings settings})
+class FadeInFadeOut<T> extends CupertinoPageRoute<T> {
+  FadeInFadeOut({WidgetBuilder builder, RouteSettings settings})
       : super(builder: builder, settings: settings);
 
   @override
