@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
+import './create_task.dart';
 import '../models/todo.dart';
+import '../widgets/route_animations.dart';
 import '../widgets/task.dart';
 
 class TaskListScreen extends StatefulWidget {
+  // TODO (Sean Urgel): Rename color to a better variable
+  // and remove accentColor. Create a mapping to better
+  // handle the situation in order to remove prop drilling
   final String title;
   final Color color;
   final Color accentColor;
@@ -24,48 +29,35 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
-  bool isAdding = false;
-  double appBarHeight = 120.0;
-
-  onPressTask(int ndx) => (bool value) {
+  Function onPressTask(int ndx) => (bool value) {
         setState(() {
           widget.todos[ndx].isFinished = value;
         });
       };
 
-  void onPressAdd() {
-    setState(() {
-      isAdding = !isAdding;
-    });
+  void onPressAdd(BuildContext context) {
+    Navigator.of(context).push(
+      FadeInFadeOut(
+        builder: (BuildContext context) => CreateTaskScreen(
+              backgroundColor: widget.color,
+            ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(double.infinity, double.maxFinite),
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 150),
-          height: isAdding ? 80 : appBarHeight,
-          child: GestureDetector(
-            onTap: isAdding ? this.onPressAdd : null,
-            child: AnimatedOpacity(
-              opacity: isAdding ? 0 : 1,
-              duration: Duration(milliseconds: 150),
-              child: AppBar(
-                elevation: 0,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-                actions: [
-                  CircleAvatar(
-                    child: Text('S'),
-                  ),
-                  Padding(padding: EdgeInsets.only(right: 16))
-                ],
-              ),
-            ),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        actions: [
+          CircleAvatar(
+            child: Text('S'),
           ),
-        ),
+          Padding(padding: EdgeInsets.only(right: 16))
+        ],
       ),
       body: Hero(
         tag: widget.tag,

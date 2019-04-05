@@ -98,7 +98,7 @@ class Task extends StatelessWidget {
                     color: this.color,
                     child: IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: this.onPressAdd,
+                      onPressed: () => this.onPressAdd(context),
                       iconSize: this.isSelected ? 36 : 26,
                       color: this.accentColor,
                     ),
