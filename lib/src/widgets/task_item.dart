@@ -44,7 +44,10 @@ class TaskItem extends StatelessWidget {
             Flexible(
               child: Text(
                 this.isSelected ? "$taskName at" : taskName,
-                style: textStyle,
+                style: !isFinished
+                    ? textStyle
+                    : textStyle.copyWith(
+                        decoration: TextDecoration.lineThrough),
                 overflow: TextOverflow.fade,
                 softWrap: true,
               ),
@@ -53,7 +56,12 @@ class TaskItem extends StatelessWidget {
                 ? Flexible(
                     child: Text(
                       " $taskTime",
-                      style: textStyle.copyWith(color: this.accentColor),
+                      style: !isFinished
+                          ? textStyle.copyWith(color: accentColor)
+                          : textStyle.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                              color: accentColor,
+                            ),
                     ),
                   )
                 : null

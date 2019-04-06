@@ -17,7 +17,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       body: Container(
         color: widget.backgroundColor,
         child: Center(
-          child: Text('Hello Wolrd'),
+          child: Text('Hello World'),
         ),
       ),
     );

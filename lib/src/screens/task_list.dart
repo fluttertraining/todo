@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swipedetector/swipedetector.dart';
 
 import './create_task.dart';
 import '../models/todo.dart';
@@ -35,14 +36,16 @@ class _TaskListScreenState extends State<TaskListScreen> {
         });
       };
 
-  void onPressAdd(BuildContext context) {
-    Navigator.of(context).push(
+  void onPressAdd(BuildContext context) async {
+    final answer = await Navigator.of(context).push(
       NoAnimationSlideDown(
         builder: (BuildContext context) => CreateTaskScreen(
               backgroundColor: widget.color,
             ),
       ),
     );
+
+    print(answer);
   }
 
   @override
@@ -61,14 +64,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
       ),
       body: Hero(
         tag: widget.tag,
-        child: Task(
-          title: widget.title,
-          color: widget.color,
-          accentColor: widget.accentColor,
-          todos: widget.todos,
-          onPressTask: this.onPressTask,
-          isSelected: true,
-          onPressAdd: this.onPressAdd,
+        child: SwipeDetector(
+          onSwipeDown: Navigator.of(context).pop,
+          child: Task(
+            title: widget.title,
+            color: widget.color,
+            accentColor: widget.accentColor,
+            todos: widget.todos,
+            onPressTask: this.onPressTask,
+            isSelected: true,
+            onPressAdd: this.onPressAdd,
+          ),
         ),
       ),
     );
