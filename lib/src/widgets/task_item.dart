@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TaskItem extends StatelessWidget {
-  final Color color;
-  final Color accentColor;
+  final Color color, accentColor;
   final TextStyle textStyle;
-  final String taskName;
-  final bool isFinished;
+  final String taskName, taskTime;
+  final bool isFinished, isSelected;
   final Function onPressTask;
-  final bool isSelected;
-  final String taskTime;
 
   TaskItem({
     Key key,
@@ -47,7 +44,9 @@ class TaskItem extends StatelessWidget {
                 style: !isFinished
                     ? textStyle
                     : textStyle.copyWith(
-                        decoration: TextDecoration.lineThrough),
+                        decoration: TextDecoration.lineThrough,
+                        color: Colors.grey[300],
+                      ),
                 overflow: TextOverflow.fade,
                 softWrap: true,
               ),
@@ -60,7 +59,7 @@ class TaskItem extends StatelessWidget {
                           ? textStyle.copyWith(color: accentColor)
                           : textStyle.copyWith(
                               decoration: TextDecoration.lineThrough,
-                              color: accentColor,
+                              color: Colors.grey[300],
                             ),
                     ),
                   )

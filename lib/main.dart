@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static Duration _duration = Duration(minutes: 5);
+  static Duration _duration = Duration(minutes: 1);
   Timer _timer;
   double _percentage = 0;
   int _start = _duration.inSeconds;
@@ -255,7 +255,7 @@ class ClockPainter extends CustomPainter {
     ..strokeWidth = 4;
 
   var inactiveLinePaint = Paint()
-    ..color = Color.fromRGBO(222, 234, 246, 1)
+    ..color = const Color.fromRGBO(222, 234, 246, 1)
     ..strokeWidth = 4;
 
   var circlePaint = Paint()..color = Colors.white;
